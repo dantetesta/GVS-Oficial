@@ -7,36 +7,40 @@ header('Content-Type: application/json');
 
 // Verificar se o usuário está logado e é admin
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Não autorizado']);
-    exit;
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Acesso negado']);
+    exit();
+}
+
+// Verificar se o ID foi fornecido
+if (!isset($_GET['id'])) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'ID do usuário não fornecido']);
+    exit();
 }
 
 try {
     $db = new Database();
     $user = new User($db);
-
-    // Verificar se é uma busca por ID específico
-    if (isset($_GET['id'])) {
-        $userData = $user->getUserById($_GET['id']);
-        if ($userData) {
-            // Remover senha do resultado
-            unset($userData['password']);
-            echo json_encode([
-                'success' => true,
-                'data' => $userData
-            ]);
-        } else {
-            throw new Exception('Usuário não encontrado');
-        }
+    
+    $userData = $user->getUserById($_GET['id']);
+    
+    if ($userData) {
+        echo json_encode([
+            'success' => true,
+            'data' => [
+                'id' => $userData['id'],
+                'username' => $userData['username'],
+                'email' => $userData['email'],
+                'full_name' => $userData['full_name'],
+                'is_admin' => $userData['is_admin']
+            ]
+        ]);
     } else {
-        throw new Exception('ID do usuário não fornecido');
+        http_response_code(404);
+        echo json_encode(['success' => false, 'message' => 'Usuário não encontrado']);
     }
-
 } catch (Exception $e) {
-    http_response_code(400);
-    echo json_encode([
-        'success' => false,
-        'message' => $e->getMessage()
-    ]);
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Erro ao buscar usuário: ' . $e->getMessage()]);
 }

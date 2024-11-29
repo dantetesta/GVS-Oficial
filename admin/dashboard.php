@@ -55,42 +55,6 @@ if (!$userData) {
     </div>
 </div>
 
-<!-- Profile Modal -->
-<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="profileModalLabel">Meu Perfil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="profileForm">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Nome de Usuário</label>
-                        <input type="text" class="form-control" id="username" value="<?php echo htmlspecialchars($userData['username']); ?>" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($userData['email']); ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">Nova Senha</label>
-                        <input type="password" class="form-control" id="newPassword">
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
-                        <input type="password" class="form-control" id="confirmPassword">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" id="saveProfile">Salvar Alterações</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery -->
@@ -101,42 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sidebar Toggle
     document.getElementById('sidebarToggle').addEventListener('click', function() {
         document.querySelector('#sidebarMenu').classList.toggle('show');
-    });
-
-    // Profile Update
-    document.getElementById('saveProfile').addEventListener('click', function() {
-        const email = document.getElementById('email').value;
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (newPassword !== confirmPassword) {
-            showAlert('As senhas não coincidem!', 'danger');
-            return;
-        }
-
-        // Aqui você pode adicionar a lógica para atualizar o perfil
-        fetch('<?php echo BASE_URL; ?>/api/update_profile.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                newPassword: newPassword
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showAlert('Perfil atualizado com sucesso!', 'success');
-                $('#profileModal').modal('hide');
-            } else {
-                showAlert(data.message || 'Erro ao atualizar perfil!', 'danger');
-            }
-        })
-        .catch(error => {
-            showAlert('Erro ao atualizar perfil!', 'danger');
-        });
     });
 });
 

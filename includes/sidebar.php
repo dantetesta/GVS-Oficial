@@ -26,11 +26,6 @@
                     <i class="bi bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Vendas</span>
                 </a>
             </li>
-            <li class="w-100">
-                <a href="<?php echo BASE_URL; ?>/admin/reports.php" class="nav-link px-0 align-middle text-white <?php echo basename($_SERVER['PHP_SELF']) == 'reports.php' ? 'active' : ''; ?>">
-                    <i class="bi bi-graph-up"></i> <span class="ms-1 d-none d-sm-inline">Relatórios</span>
-                </a>
-            </li>
         </ul>
     </div>
 </div>

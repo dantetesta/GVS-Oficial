@@ -11,8 +11,14 @@
     
     <!-- Custom CSS -->
     <link href="<?php echo BASE_URL; ?>/assets/css/style.css" rel="stylesheet">
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="<?php echo BASE_URL; ?>/assets/js/notifications.js"></script>
 </head>
-<body>
+<body class="bg-light">
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="bg-dark text-white" id="sidebar-wrapper">
@@ -59,22 +65,17 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-circle me-1"></i>
-                                    <span id="currentUsername"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <span id="currentUsername"><?php echo htmlspecialchars($_SESSION['full_name']); ?></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
-                                            <i class="bi bi-person me-2"></i>Meu Perfil
-                                        </a>
-                                    </li>
                                     <?php if ($user->isAdmin()): ?>
                                     <li>
                                         <a class="dropdown-item" href="<?php echo BASE_URL; ?>/admin/settings.php">
                                             <i class="bi bi-gear me-2"></i>Configurações
                                         </a>
                                     </li>
-                                    <?php endif; ?>
                                     <li><hr class="dropdown-divider"></li>
+                                    <?php endif; ?>
                                     <li>
                                         <a class="dropdown-item" href="<?php echo BASE_URL; ?>/auth/logout.php">
                                             <i class="bi bi-box-arrow-right me-2"></i>Sair
@@ -87,51 +88,8 @@
                 </div>
             </nav>
 
-            <!-- Profile Modal -->
-            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="profileModalLabel">Meu Perfil</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form id="profileForm" action="<?php echo BASE_URL; ?>/admin/profile.php" method="post">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Nome de Usuário</label>
-                                    <input type="text" class="form-control" id="username" name="username" 
-                                           value="<?php echo htmlspecialchars($_SESSION['username']); ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" 
-                                           value="<?php echo htmlspecialchars($_SESSION['email']); ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="full_name" class="form-label">Nome Completo</label>
-                                    <input type="text" class="form-control" id="full_name" name="full_name" 
-                                           value="<?php echo htmlspecialchars($_SESSION['full_name']); ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="new_password" class="form-label">Nova Senha (opcional)</label>
-                                    <input type="password" class="form-control" id="new_password" name="new_password">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="confirm_password" class="form-label">Confirmar Nova Senha</label>
-                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
             <!-- Alert Container -->
             <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1050;"></div>
 
             <!-- Main Content Container -->
-            <div class="container-fluid p-4">
+            <div class="container-fluid py-4">
