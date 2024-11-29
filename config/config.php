@@ -10,11 +10,17 @@ define('SMTP_HOST', 'mail.dantetesta.com.br');
 define('SMTP_USER', 'no-reply@dantetesta.com.br');
 define('SMTP_PASS', 'ddtevy11@');
 define('SMTP_PORT', 465);
-define('SMTP_FROM_NAME', 'GVS - Sistema de Vendas Simples');
+define('SMTP_FROM_NAME', 'GVS');
 
 // Application settings
-define('APP_NAME', 'GVS - Sistema de Vendas Simples');
-define('BASE_URL', isset($_SERVER['HTTP_HOST']) ? 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) : '');
+define('APP_NAME', 'GVS');
+
+// Define BASE_URL
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+$host = $_SERVER['HTTP_HOST'];
+$baseDir = dirname(dirname($_SERVER['PHP_SELF']));
+$baseDir = trim($baseDir, '/'); // Remove barras do início e fim
+define('BASE_URL', $protocol . $host . ($baseDir ? '/' . $baseDir : ''));
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {

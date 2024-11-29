@@ -29,12 +29,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result['success']) {
         $_SESSION['username'] = $data['username'];
         $_SESSION['full_name'] = $data['full_name'];
-        $message = $result['message'];
-        $userData = $user->getUserById($user->getCurrentUserId());
+        
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            // Resposta AJAX
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => $result['message']]);
+            exit;
+        } else {
+            // Redirecionamento normal
+            header('Location: ' . $_SERVER['HTTP_REFERER'] . '?message=' . urlencode($result['message']));
+            exit;
+        }
     } else {
-        $error = $result['message'];
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            // Resposta AJAX
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => $result['message']]);
+            exit;
+        } else {
+            // Redirecionamento normal com erro
+            header('Location: ' . $_SERVER['HTTP_REFERER'] . '?error=' . urlencode($result['message']));
+            exit;
+        }
     }
 }
+
+// Se não for POST, redireciona de volta
+header('Location: ' . $_SERVER['HTTP_REFERER']);
+exit;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
