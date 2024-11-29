@@ -1,0 +1,39 @@
+# IDE e editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de configuração local
+config/config.local.php
+
+# Arquivos de log
+*.log
+logs/
+
+# Dependências e vendor
+vendor/
+node_modules/
+
+# Arquivos de cache
+*.cache
+cache/
+
+# Arquivos temporários
+*.tmp
+*.temp
+temp/
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+
+# Arquivos de backup
+*.bak
+*.backup
+*~
